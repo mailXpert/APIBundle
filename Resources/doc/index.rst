@@ -50,6 +50,7 @@ Step 3: Create your entity class
 On your application, you have to create an AccessToken entity. You need to extend the one from the bundle. You can adapt the following code:
 
 .. code-block:: php
+
     <?php
     // src/AppBundle/Entity/AccessToken.php
 
@@ -86,6 +87,7 @@ Step 4: Modify your config
 In order to have the translation, enable the following line:
 
 .. code-block:: yml
+
     # app/config/config.yml
         translator:     ~
 ..
@@ -95,6 +97,7 @@ You also need to configure the bundle. Provide the necessary information (you ca
 You can use the following structure:
 
 .. code-block:: yml
+
     # app/config/config.yml
     mailxpert_api:
         access_token_class: AppBundle\Entity\AccessToken
@@ -110,6 +113,7 @@ Step 5: Import the routes from the module
 To be able to use the Login with mailXpert, you can import the following routes. You can also create your own controller inspired on the one from the Bundle.
 
 .. code-block:: yml
+
     # app/config/routing.yml
     mx_api:
         resource: "@MailxpertAPIBundle/Resources/config/routing.xml"
