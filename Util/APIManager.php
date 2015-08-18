@@ -58,9 +58,7 @@ class APIManager
 
         $config =  [
             'app_id' => $this->appId,
-            'app_secret' => $this->appSecret,
-            'api_base_url' => 'http://api.mailxpert.dev/app_dev.php', // TODO: DEV - REMOVE
-            'oauth_base_url' => 'http://app.mailxpert.dev/app_dev.php' // TODO: DEV - REMOVE
+            'app_secret' => $this->appSecret
         ];
 
         if ($accessTokenManager->hasAccessToken()) {
