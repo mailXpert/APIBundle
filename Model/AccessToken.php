@@ -22,14 +22,36 @@ class AccessToken implements AccessTokenInterface
     protected $refreshToken;
 
     /**
-     * @var string
+     * @var int
      */
     protected $expireAt;
+
+    /**
+     * @var int
+     */
+
+    protected $refreshTokenExpireAt;
 
     /**
      * @var string
      */
     protected $scope;
+
+    /**
+     * New Access Token
+     */
+    public function __construct()
+    {
+        // TODO: Implement __construct() method.
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return (string) $this->getAccessToken();
+    }
 
     /**
      * @return mixed
@@ -56,11 +78,27 @@ class AccessToken implements AccessTokenInterface
     }
 
     /**
-     * @return string
+     * @return int
      */
     public function getExpireAt()
     {
         return $this->expireAt;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isValid()
+    {
+        return (bool) time() < $this->getExpireAt();
+    }
+
+    /**
+     * @return int
+     */
+    public function getRefreshTokenExpireAt()
+    {
+        return $this->refreshTokenExpireAt;
     }
 
     /**
@@ -96,13 +134,25 @@ class AccessToken implements AccessTokenInterface
     }
 
     /**
-     * @param string $expireAt
+     * @param int $expireAt
      *
      * @return AccessToken
      */
     public function setExpireAt($expireAt)
     {
         $this->expireAt = $expireAt;
+
+        return $this;
+    }
+
+    /**
+     * @param int $refreshTokenExpireAt
+     *
+     * @return AccessToken
+     */
+    public function setRefreshTokenExpireAt($refreshTokenExpireAt)
+    {
+        $this->refreshTokenExpireAt = $refreshTokenExpireAt;
 
         return $this;
     }
@@ -129,10 +179,5 @@ class AccessToken implements AccessTokenInterface
         $scopes = explode(',', $this->getScope());
 
         return in_array($scope, $scopes);
-    }
-
-    public function __toString()
-    {
-        return (string) $this->getAccessToken();
     }
 }

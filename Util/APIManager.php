@@ -1,8 +1,9 @@
 <?php
 
-namespace mailxpert\apibundle\Util;
+namespace Mailxpert\APIBundle\Util;
 
 
+use Mailxpert\APIBundle\Model\AccessTokenManagerInterface;
 use Mailxpert\Authentication\AccessToken;
 use Mailxpert\Mailxpert;
 
@@ -24,36 +25,128 @@ class APIManager
     private $redirectUrl;
 
     /**
+     * @var string $scope mailXpert OAuth Scope
+     */
+    private $scope;
+
+    /**
      * @var Mailxpert
      */
     private $mailxpert;
 
     /**
+     * @var AccessTokenManagerInterface
+     */
+    private $accessTokenManager;
+
+    /**
      * AccessTokenManager constructor.
      *
-     * @param $appId
-     * @param $appSecret
-     * @param $redirectUrl
+     * @param AccessTokenManagerInterface $accessTokenManager
+     * @param string                      $appId
+     * @param string                      $appSecret
+     * @param string                      $redirectUrl
+     * @param string|null                 $scope
      */
-    public function __construct($appId, $appSecret, $redirectUrl)
+    public function __construct(AccessTokenManagerInterface $accessTokenManager, $appId, $appSecret, $redirectUrl, $scope = null)
     {
         $this->appId = $appId;
         $this->appSecret = $appSecret;
         $this->redirectUrl = $redirectUrl;
+        $this->scope = $scope;
+        $this->accessTokenManager = $accessTokenManager;
 
-        $this->mailxpert = new Mailxpert([
-            'appId' => $this->appId,
-            'appSecret' => $this->appSecret
-        ]);
+        $config =  [
+            'app_id' => $this->appId,
+            'app_secret' => $this->appSecret,
+            'api_base_url' => 'http://api.mailxpert.dev/app_dev.php', // TODO: DEV - REMOVE
+            'oauth_base_url' => 'http://app.mailxpert.dev/app_dev.php' // TODO: DEV - REMOVE
+        ];
+
+        if ($accessTokenManager->hasAccessToken()) {
+            $accessToken = $accessTokenManager->getAccessToken();
+
+            if ($accessToken && $accessToken->isValid()) {
+                $config['access_token'] = $accessToken->getAccessToken();
+            }
+        }
+
+        $this->mailxpert = new Mailxpert(
+           $config
+        );
+
+
     }
 
+    /**
+     * @return Mailxpert
+     */
     public function getMailxpert()
     {
         return $this->mailxpert;
     }
 
+    /**
+     * @return string
+     */
+    public function getLoginUrl()
+    {
+        $scope = explode(',', $this->scope);
+
+        return $this->getMailxpert()->getLoginHelper()->getLoginUrl($this->redirectUrl, $scope);
+    }
+
+    /**
+     * @return AccessToken
+     */
+    public function retrieveAccessToken()
+    {
+        return $this->getMailxpert()->getLoginHelper()->getAccessToken($this->redirectUrl);
+    }
+
+    /**
+     * @param AccessToken $accessToken
+     */
     public function setAccessToken(AccessToken $accessToken)
     {
         $this->getMailxpert()->setAccessToken($accessToken);
     }
+
+    /**
+     * @return \Mailxpert\APIBundle\Model\AccessTokenInterface|null
+     */
+    public function refreshAccessToken()
+    {
+        if ($this->getAccessTokenManager()->hasAccessToken()) {
+            $localAccessToken = $this->getAccessTokenManager()->getAccessToken();
+
+            if ($localAccessToken->isValid()) {
+                return $localAccessToken;
+            }
+
+            $perishedAccessToken = new AccessToken(
+                $localAccessToken->getAccessToken(),
+                $localAccessToken->getRefreshToken(),
+                $localAccessToken->getExpireAt(),
+                $localAccessToken->getScope(),
+                $localAccessToken->getRefreshTokenExpireAt()
+            );
+
+            $accessToken = $this->getMailxpert()->getLoginHelper()->refreshAccessToken($perishedAccessToken, $this->redirectUrl);
+
+            return $this->getAccessTokenManager()->updateAccessToken($accessToken);
+        }
+
+        return null;
+    }
+
+    /**
+     * @return AccessTokenManagerInterface
+     */
+    private function getAccessTokenManager()
+    {
+        return $this->accessTokenManager;
+    }
+
+
 }

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<routes xmlns="http://symfony.com/schema/routing"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
+
+    <route id="mailxpert_api_oauth_login" path="/mx/oauth/login">
+        <default key="_controller">MailxpertAPIBundle:OAuth:index</default>
+    </route>
+
+    <route id="mailxpert_api_oauth_code" path="/mx/oauth/code">
+        <default key="_controller">MailxpertAPIBundle:OAuth:code</default>
+    </route>
+</routes>

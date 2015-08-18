@@ -6,6 +6,11 @@ namespace Mailxpert\APIBundle\Model;
 interface AccessTokenInterface
 {
     /**
+     * @return mixed Get accessToken model entity for persistent models
+     */
+    public function getId();
+
+    /**
      * @return string mailXpert API Access Token
      */
     public function getAccessToken();
@@ -30,16 +35,28 @@ interface AccessTokenInterface
     public function setRefreshToken($refreshToken);
 
     /**
-     * @return string Expire at
+     * @return int Expire at
      */
     public function getExpireAt();
 
     /**
-     * @param string $expireAt Expire at
+     * @param int $expireAt Expire at
      *
      * @return self
      */
     public function setExpireAt($expireAt);
+
+    /**
+     * @return int Refresh Token expire at
+     */
+    public function getRefreshTokenExpireAt();
+
+    /**
+     * @param int $expireAt Refresh Token expire at
+     *
+     * @return self
+     */
+    public function setRefreshTokenExpireAt($expireAt);
 
     /**
      * @return string Access token scope
@@ -59,4 +76,11 @@ interface AccessTokenInterface
      * @return boolean
      */
     public function hasScope($scope);
+
+    /**
+     * Check if the access token is still valid
+     *
+     * @return boolean
+     */
+    public function isValid();
 }

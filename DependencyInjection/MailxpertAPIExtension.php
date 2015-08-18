@@ -21,14 +21,19 @@ class MailxpertAPIExtension extends Extension
     {
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
-
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('services.xml');
 
+        $loader->load(sprintf('%s.xml', $config['db_driver']));
+        $container->getDefinition('mailxpert_api.access_token_manager')
+            ->replaceArgument(2, $config['access_token_class']);
+
+
+        $loader->load('services.xml');
         $container->getDefinition('mailxpert_api.manager')
-            ->replaceArgument(0, $config['oauth']['client_id'])
-            ->replaceArgument(1, $config['oauth']['client_secret'])
-            ->replaceArgument(2, $config['oauth']['redirect_url'])
+            ->replaceArgument(1, $config['oauth']['client_id'])
+            ->replaceArgument(2, $config['oauth']['client_secret'])
+            ->replaceArgument(3, $config['oauth']['redirect_url'])
+            ->replaceArgument(4, $config['oauth']['scope'])
         ;
 
     }

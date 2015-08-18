@@ -1,0 +1,5 @@
+# Login
+oauth:
+    login_with_mailxpert: "Se connecter avec mailXpert"
+    success_message: "Vous vous êtes correctement connecté à mailXpert."
+    expireAt: "Expire at %expireAt%"
