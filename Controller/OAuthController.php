@@ -27,7 +27,7 @@ class OAuthController extends Controller
             $this->getDoctrine()->getManager()->persist($localAccessToken);
         }
 
-        $localAccessToken->setRefreshToken($accessToken->getAccessToken());
+        $localAccessToken->setRefreshToken($accessToken->getRefreshToken());
         $localAccessToken->setRefreshTokenExpireAt($accessToken->getRefreshTokenExpiresAt());
         $localAccessToken->setScope($accessToken->getScope());
 
