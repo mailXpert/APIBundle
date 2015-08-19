@@ -69,6 +69,26 @@ class AccessTokenManager extends BaseAccessTokenManager
     }
 
     /**
+     * @param int $time
+     *
+     * @return AccessTokenInterface[]|null
+     */
+    public function findAlmostExpiredTokens($time = 604800)
+    {
+        $repository = $this->getDoctrine()->getRepository($this->getClass());
+
+        $query = $repository->createQueryBuilder('a')
+            ->where('a.refreshTokenExpireAt > :expired')
+            ->setParameter('expired', time())
+            ->andWhere('a.refreshTokenExpireAt < :expiration')
+            ->setParameter('expiration', time() + $time)
+            ->getQuery()
+        ;
+
+        return $query->getResult();
+    }
+
+    /**
      * @param AccessTokenInterface $accessToken
      */
     public function deleteAccessToken(AccessTokenInterface $accessToken)

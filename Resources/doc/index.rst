@@ -133,3 +133,13 @@ If you already have your access token values (you can get them from the Develope
 
     app/console mailxpert:api:access_token:create
 ..
+
+Automatically update refresh token
+----------------------------------
+
+You can run a command in the cron to automatically refresh tokens that will expire soon.
+
+.. code-block:: bash
+
+    app/console mailxpert:api:access_token:refresh --force
+..

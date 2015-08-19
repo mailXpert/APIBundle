@@ -48,6 +48,15 @@ interface AccessTokenManagerInterface
     public function findBy(array $criteria);
 
     /**
+     * Find access tokens with almost expired refresh tokens
+     *
+     * @param int $time Amount of time before expiration (default: 7 days)
+     *
+     * @return AccessTokenInterface[]|null
+     */
+    public function findAlmostExpiredTokens($time = 604800);
+
+    /**
      * Check if there is already an access token in the session
      *
      * @return boolean
