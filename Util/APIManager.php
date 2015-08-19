@@ -128,10 +128,6 @@ class APIManager
             throw new MailxpertAPIBundleException('No access token object provided or stored in session');
         }
 
-        if ($accessToken->isValid()) {
-            return $accessToken;
-        }
-
         $SDKAccessToken = $this->getMailxpert()->getLoginHelper()->refreshAccessToken($accessToken->getSDKAccessToken(), $this->redirectUrl);
 
         return $this->getAccessTokenManager()->updateAccessToken($accessToken, $SDKAccessToken);
