@@ -2,6 +2,8 @@
 
 namespace Mailxpert\APIBundle\Model;
 
+use Mailxpert\Authentication\AccessToken as SDKAccessToken;
+
 /**
  * Class AccessToken
  *
@@ -180,4 +182,20 @@ class AccessToken implements AccessTokenInterface
 
         return in_array($scope, $scopes);
     }
+
+    /**
+     * @return SDKAccessToken
+     */
+    public function getSDKAccessToken()
+    {
+        return new SDKAccessToken(
+            $this->getAccessToken(),
+            $this->getRefreshToken(),
+            $this->getExpireAt(),
+            $this->getScope(),
+            $this->getRefreshTokenExpireAt()
+        );
+    }
+
+
 }

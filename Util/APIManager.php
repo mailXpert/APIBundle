@@ -3,8 +3,10 @@
 namespace Mailxpert\APIBundle\Util;
 
 
+use Mailxpert\APIBundle\Exceptions\MailxpertAPIBundleException;
+use Mailxpert\APIBundle\Model\AccessTokenInterface;
 use Mailxpert\APIBundle\Model\AccessTokenManagerInterface;
-use Mailxpert\Authentication\AccessToken;
+use Mailxpert\Authentication\AccessToken as SDKAccessToken;
 use Mailxpert\Mailxpert;
 
 class APIManager
@@ -56,7 +58,7 @@ class APIManager
         $this->scope = $scope;
         $this->accessTokenManager = $accessTokenManager;
 
-        $config =  [
+        $config = [
             'app_id' => $this->appId,
             'app_secret' => $this->appSecret
         ];
@@ -65,15 +67,13 @@ class APIManager
             $accessToken = $accessTokenManager->getAccessToken();
 
             if ($accessToken && $accessToken->isValid()) {
-                $config['access_token'] = $accessToken->getAccessToken();
+                $config['access_token'] = $accessToken->getSDKAccessToken();
             }
         }
 
         $this->mailxpert = new Mailxpert(
-           $config
+            $config
         );
-
-
     }
 
     /**
@@ -95,7 +95,7 @@ class APIManager
     }
 
     /**
-     * @return AccessToken
+     * @return SDKAccessToken
      */
     public function retrieveAccessToken()
     {
@@ -103,39 +103,38 @@ class APIManager
     }
 
     /**
-     * @param AccessToken $accessToken
+     * @param SDKAccessToken $accessToken
      */
-    public function setAccessToken(AccessToken $accessToken)
+    public function setAccessToken(SDKAccessToken $accessToken)
     {
         $this->getMailxpert()->setAccessToken($accessToken);
     }
 
     /**
-     * @return \Mailxpert\APIBundle\Model\AccessTokenInterface|null
+     * @param AccessTokenInterface|null $accessToken
+     *
+     * @return AccessTokenInterface
+     * @throws MailxpertAPIBundleException
      */
-    public function refreshAccessToken()
+    public function refreshAccessToken(AccessTokenInterface $accessToken = null)
     {
-        if ($this->getAccessTokenManager()->hasAccessToken()) {
-            $localAccessToken = $this->getAccessTokenManager()->getAccessToken();
-
-            if ($localAccessToken->isValid()) {
-                return $localAccessToken;
+        if (is_null($accessToken)) {
+            if ($this->getAccessTokenManager()->hasAccessToken()) {
+                $accessToken = $this->getAccessTokenManager()->getAccessToken();
             }
-
-            $perishedAccessToken = new AccessToken(
-                $localAccessToken->getAccessToken(),
-                $localAccessToken->getRefreshToken(),
-                $localAccessToken->getExpireAt(),
-                $localAccessToken->getScope(),
-                $localAccessToken->getRefreshTokenExpireAt()
-            );
-
-            $accessToken = $this->getMailxpert()->getLoginHelper()->refreshAccessToken($perishedAccessToken, $this->redirectUrl);
-
-            return $this->getAccessTokenManager()->updateAccessToken($accessToken);
         }
 
-        return null;
+        if (!$accessToken) {
+            throw new MailxpertAPIBundleException('No access token object provided or stored in session');
+        }
+
+        if ($accessToken->isValid()) {
+            return $accessToken;
+        }
+
+        $SDKAccessToken = $this->getMailxpert()->getLoginHelper()->refreshAccessToken($accessToken->getSDKAccessToken(), $this->redirectUrl);
+
+        return $this->getAccessTokenManager()->updateAccessToken($accessToken, $SDKAccessToken);
     }
 
     /**

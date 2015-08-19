@@ -2,6 +2,7 @@
 
 namespace Mailxpert\APIBundle\Model;
 
+use Mailxpert\Authentication\AccessToken as SDKAccessToken;
 
 interface AccessTokenInterface
 {
@@ -83,4 +84,9 @@ interface AccessTokenInterface
      * @return boolean
      */
     public function isValid();
+
+    /**
+     * @return SDKAccessToken
+     */
+    public function getSDKAccessToken();
 }

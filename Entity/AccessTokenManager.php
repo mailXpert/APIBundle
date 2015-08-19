@@ -113,22 +113,22 @@ class AccessTokenManager extends BaseAccessTokenManager
     }
 
     /**
-     * @param SDKAccessToken $accessToken
+     * @param AccessTokenInterface $accessToken
+     * @param SDKAccessToken       $SDKAccessToken
      *
      * @return AccessTokenInterface
      */
-    public function updateAccessToken(SDKAccessToken $accessToken)
+    public function updateAccessToken(AccessTokenInterface $accessToken, SDKAccessToken $SDKAccessToken)
     {
-            $localAccessToken = $this->getAccessToken();
-            $localAccessToken->setAccessToken($accessToken->getAccessToken());
-            $localAccessToken->setExpireAt($accessToken->getExpiresAt());
-            $localAccessToken->setRefreshToken($accessToken->getRefreshToken());
-            $localAccessToken->setRefreshTokenExpireAt($accessToken->getRefreshTokenExpiresAt());
-            $localAccessToken->setScope($accessToken->getScope());
+        $accessToken->setAccessToken($SDKAccessToken->getAccessToken());
+        $accessToken->setExpireAt($SDKAccessToken->getExpiresAt());
+        $accessToken->setRefreshToken($SDKAccessToken->getRefreshToken());
+        $accessToken->setRefreshTokenExpireAt($SDKAccessToken->getRefreshTokenExpiresAt());
+        $accessToken->setScope($SDKAccessToken->getScope());
 
-            $this->getDoctrine()->getManager()->flush();
+        $this->getDoctrine()->getManager()->flush();
 
-            return $localAccessToken;
+        return $accessToken;
     }
 
 

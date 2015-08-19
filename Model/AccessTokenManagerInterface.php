@@ -73,9 +73,10 @@ interface AccessTokenManagerInterface
     /**
      * Update local access token with valid access token and new refresh token
      *
-     * @param SDKAccessToken $accessToken
+     * @param AccessTokenInterface $accessToken
+     * @param SDKAccessToken $SDKAccessToken
      *
      * @return AccessTokenInterface
      */
-    public function updateAccessToken(SDKAccessToken $accessToken);
+    public function updateAccessToken(AccessTokenInterface $accessToken, SDKAccessToken $SDKAccessToken);
 }
