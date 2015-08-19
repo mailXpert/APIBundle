@@ -120,3 +120,16 @@ To be able to use the Login with mailXpert, you can import the following routes.
         type: xml
 ..
 
+
+Annexes
+=======
+
+Create an access token from the console
+---------------------------------------
+
+If you already have your access token values (you can get them from the Developer console at https://dev.mailxpert.ch/ ), you can enter them interactively via the console:
+
+.. code-block:: bash
+
+    app/console mailxpert:api:access_token:create
+..
