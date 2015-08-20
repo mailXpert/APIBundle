@@ -4,7 +4,6 @@ namespace Mailxpert\APIBundle\Entity;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Mailxpert\APIBundle\Exceptions\MailxpertAPIBundleException;
-use Mailxpert\APIBundle\Model\AccessToken;
 use Mailxpert\APIBundle\Model\AccessTokenInterface;
 use Mailxpert\APIBundle\Model\AccessTokenManager as BaseAccessTokenManager;
 use Mailxpert\Authentication\AccessToken as SDKAccessToken;
