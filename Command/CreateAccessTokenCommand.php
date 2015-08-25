@@ -1,11 +1,6 @@
 <?php
-/**
- * Gasverband.
- * Date: 19/08/15
- */
 
 namespace Mailxpert\APIBundle\Command;
-
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\QuestionHelper;

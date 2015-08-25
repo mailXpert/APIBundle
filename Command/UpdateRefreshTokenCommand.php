@@ -1,8 +1,4 @@
 <?php
-/**
- * Gasverband.
- * Date: 19/08/15
- */
 
 namespace Mailxpert\APIBundle\Command;
 
