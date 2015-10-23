@@ -34,6 +34,8 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('client_secret')->isRequired()->cannotBeEmpty()->end()
                         ->scalarNode('redirect_url')->isRequired()->cannotBeEmpty()->end()
                         ->scalarNode('scope')->defaultValue(null)->end()
+                        ->scalarNode('api_base_url')->defaultValue(null)->end()
+                        ->scalarNode('api_oauth_url')->defaultValue(null)->end()
                     ->end()
                     ->isRequired()
                     ->cannotBeEmpty()

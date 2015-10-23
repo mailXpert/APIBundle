@@ -11,6 +11,8 @@
             <argument />
             <argument />
             <argument />
+            <argument />
+            <argument />
         </service>
     </services>
 

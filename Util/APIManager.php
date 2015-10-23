@@ -2,13 +2,16 @@
 
 namespace Mailxpert\APIBundle\Util;
 
-
 use Mailxpert\APIBundle\Exceptions\MailxpertAPIBundleException;
 use Mailxpert\APIBundle\Model\AccessTokenInterface;
 use Mailxpert\APIBundle\Model\AccessTokenManagerInterface;
 use Mailxpert\Authentication\AccessToken as SDKAccessToken;
 use Mailxpert\Mailxpert;
 
+/**
+ * Class APIManager
+ * @package Mailxpert\APIBundle\Util
+ */
 class APIManager
 {
     /**
@@ -49,8 +52,10 @@ class APIManager
      * @param string                      $appSecret
      * @param string                      $redirectUrl
      * @param string|null                 $scope
+     * @param null                        $APIBaseUrl
+     * @param null                        $APIOAuthUrl
      */
-    public function __construct(AccessTokenManagerInterface $accessTokenManager, $appId, $appSecret, $redirectUrl, $scope = null)
+    public function __construct(AccessTokenManagerInterface $accessTokenManager, $appId, $appSecret, $redirectUrl, $scope = null, $APIBaseUrl = null, $APIOAuthUrl = null)
     {
         $this->appId = $appId;
         $this->appSecret = $appSecret;
@@ -60,8 +65,16 @@ class APIManager
 
         $config = [
             'app_id' => $this->appId,
-            'app_secret' => $this->appSecret
+            'app_secret' => $this->appSecret,
         ];
+
+        if (!is_null($APIBaseUrl)) {
+            $config['api_base_url'] = $APIBaseUrl;
+        }
+
+        if (!is_null($APIOAuthUrl)) {
+            $config['oauth_base_url'] = $APIOAuthUrl;
+        }
 
         if ($accessTokenManager->hasAccessToken()) {
             $accessToken = $accessTokenManager->getAccessToken();
