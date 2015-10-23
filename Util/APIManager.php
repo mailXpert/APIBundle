@@ -68,11 +68,11 @@ class APIManager
             'app_secret' => $this->appSecret,
         ];
 
-        if (!is_null($APIBaseUrl)) {
+        if (!is_null($APIBaseUrl) && !empty($APIBaseUrl)) {
             $config['api_base_url'] = $APIBaseUrl;
         }
 
-        if (!is_null($APIOAuthUrl)) {
+        if (!is_null($APIOAuthUrl) && !empty($APIOAuthUrl)) {
             $config['oauth_base_url'] = $APIOAuthUrl;
         }
 
