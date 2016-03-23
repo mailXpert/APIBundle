@@ -92,7 +92,7 @@ class AccessToken implements AccessTokenInterface
      */
     public function isValid()
     {
-        return (bool) time() < $this->getExpireAt();
+        return (bool) (time() < $this->getExpireAt());
     }
 
     /**
