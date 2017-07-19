@@ -34,6 +34,8 @@ class MailxpertAPIExtension extends Extension
             ->replaceArgument(2, $config['oauth']['client_secret'])
             ->replaceArgument(3, $config['oauth']['redirect_url'])
             ->replaceArgument(4, $config['oauth']['scope'])
+            ->replaceArgument(5, $config['oauth']['api_base_url'])
+            ->replaceArgument(6, $config['oauth']['api_oauth_url'])
         ;
 
     }
