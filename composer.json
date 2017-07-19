@@ -1,6 +1,5 @@
 {
     "name": "mailxpert/apibundle",
-    "version": "0.0.7",
     "description": "mailXpert API Bundle for Symfony",
     "type": "library",
     "require": {
