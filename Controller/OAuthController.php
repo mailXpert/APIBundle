@@ -10,7 +10,7 @@ class OAuthController extends Controller
     {
         $url = $this->get('mailxpert_api.manager')->getLoginUrl();
 
-        return $this->render('MailxpertAPIBundle:OAuth:index.html.twig', array('url' => $url));
+        return $this->render('@MailxpertAPI/OAuth/index.html.twig', array('url' => $url));
     }
 
     public function codeAction()
@@ -38,6 +38,6 @@ class OAuthController extends Controller
         $expireAt = new \DateTime();
         $expireAt->setTimestamp($accessToken->getExpiresAt());
 
-        return $this->render('MailxpertAPIBundle:OAuth:oauth.html.twig', array('expireAt' => $expireAt));
+        return $this->render('@MailxpertAPI/OAuth/oauth.html.twig', array('expireAt' => $expireAt));
     }
 }

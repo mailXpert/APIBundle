@@ -23,6 +23,12 @@ class UpdateRefreshTokenCommand extends ContainerAwareCommand
     {
         $accessTokens = $this->getContainer()->get('mailxpert_api.access_token_manager')->findAlmostExpiredTokens();
 
+        if (0 === count($accessTokens)) {
+            $output->writeln('<comment>No access token is due to being refreshed.</comment>');
+
+            exit;
+        }
+
         foreach ($accessTokens as $accessToken) {
             $date = new \DateTime();
             $date->setTimestamp($accessToken->getRefreshTokenExpireAt());
@@ -37,6 +43,7 @@ class UpdateRefreshTokenCommand extends ContainerAwareCommand
         }
 
         if (!$input->getOption('force')) {
+            $output->writeln('');
             $output->writeln('<comment>To proceed with the update, use the --force</comment>');
         }
     }
