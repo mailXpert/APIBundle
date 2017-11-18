@@ -6,7 +6,7 @@
     "authors": [
         {
             "name": "ARTACK WebLab GmbH",
-            "homepage": "https://www.artack.ch",
+            "homepage": "https://www.artack.ch"
         }
     ],
     "require": {
