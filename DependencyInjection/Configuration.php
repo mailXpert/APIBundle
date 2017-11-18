@@ -27,18 +27,17 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->scalarNode('db_driver')->defaultValue('orm')->end()
-                ->scalarNode('access_token_class')->isRequired()->cannotBeEmpty()->end()
+                ->scalarNode('access_token_class')->isRequired()->end()
                 ->arrayNode('oauth')
                     ->children()
-                        ->scalarNode('client_id')->isRequired()->cannotBeEmpty()->end()
-                        ->scalarNode('client_secret')->isRequired()->cannotBeEmpty()->end()
-                        ->scalarNode('redirect_url')->isRequired()->cannotBeEmpty()->end()
+                        ->scalarNode('client_id')->isRequired()->end()
+                        ->scalarNode('client_secret')->isRequired()->end()
+                        ->scalarNode('redirect_url')->isRequired()->end()
                         ->scalarNode('scope')->defaultValue(null)->end()
                         ->scalarNode('api_base_url')->defaultValue(null)->end()
                         ->scalarNode('api_oauth_url')->defaultValue(null)->end()
                     ->end()
                     ->isRequired()
-                    ->cannotBeEmpty()
                 ->end()
             ->end();
 
