@@ -4,13 +4,10 @@ namespace Mailxpert\APIBundle\Model;
 
 use Mailxpert\Authentication\AccessToken as SDKAccessToken;
 
-/**
- * Class AccessToken
- *
- * @package Mailxpert\APIBundle\Model
- */
 class AccessToken implements AccessTokenInterface
 {
+    public const VALID_OFFSET = 300;
+
     protected $id;
 
     /**
@@ -38,14 +35,6 @@ class AccessToken implements AccessTokenInterface
      * @var string
      */
     protected $scope;
-
-    /**
-     * New Access Token
-     */
-    public function __construct()
-    {
-        // TODO: Implement __construct() method.
-    }
 
     /**
      * @return string
@@ -93,6 +82,11 @@ class AccessToken implements AccessTokenInterface
     public function isValid()
     {
         return (bool) (time() < $this->getExpireAt());
+    }
+
+    public function isValidWithOffset($offset = self::VALID_OFFSET)
+    {
+        return time() < ($this->getExpireAt() - $offset);
     }
 
     /**

@@ -5,7 +5,7 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
    <services>
-        <service id="mailxpert_api.access_token_manager" class="Mailxpert\APIBundle\Entity\AccessTokenManager">
+        <service id="mailxpert_api.access_token_manager" class="Mailxpert\APIBundle\Entity\AccessTokenManager" public="true">
             <argument type="service" id="doctrine" />
             <argument type="service" id="session" />
             <argument />
