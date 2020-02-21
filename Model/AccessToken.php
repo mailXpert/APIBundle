@@ -6,7 +6,7 @@ use Mailxpert\Authentication\AccessToken as SDKAccessToken;
 
 class AccessToken implements AccessTokenInterface
 {
-    public const VALID_OFFSET = 300;
+    const VALID_OFFSET = 300;
 
     protected $id;
 
